@@ -4,8 +4,12 @@ import {
     error
 } from './logger';
 
+import { getWorkspace,validate } from "./vsc";
+
 export {
     log,
     info,
-    error
+    error,
+    getWorkspace,
+    validate
 };

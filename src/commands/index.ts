@@ -1,13 +1,17 @@
 import {
     register,
-    create
+    create,
+    Callback,
+    Command
 } from "./command";
 import { runMake } from "./makeCommand";
-
-const makeCommand = register(create("make", runMake));
+import { runExecute } from "./executeCommand";
 
 export {
     register,
     create,
-    makeCommand
+    runMake,
+    runExecute,
+    Callback,
+    Command
 };

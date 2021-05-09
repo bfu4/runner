@@ -1,41 +1,29 @@
-import {Process} from "./process";
-import {Uri, window, workspace, WorkspaceFolder} from "vscode";
-
-const changeDir = new Process("cd");
-const makeProc = new Process("make");
+import {Executor} from "./executor";
+import {window, workspace} from "vscode";
+import {getWorkspace, validate} from "../util";
 
 /**
  * Change to the workspace root directory and spawn make
  * @param args
  */
 export const runMake = (args?: any) => {
-    const doc = window.activeTextEditor?.document;
-    if (doc) {
-        const path = doc.uri;
-        const ws = getWorkspace(path);
-        if (ws !== null) {
-            changeDir.spawn(ws.uri.fsPath);
-            makeProc.spawn(args);
+    if (validate.workspaces()) {
+        const editor = window.activeTextEditor;
+        let ws, doc, path;
+        if (editor) {
+            doc = editor.document;
+            path = doc.uri;
+            ws = getWorkspace(path);
+        } else {
+            // Will never be undefined after validation
+            ws = workspace.workspaceFolders![0];
         }
-    } else {
-        window.showErrorMessage(`Could not find a document at ${doc}`);
+        if (ws) {
+            const exec = new Executor(ws.uri.fsPath);
+            exec.spawnChained(
+                {command: "cd", args: [ws.uri.fsPath]},
+                {command: "/usr/bin/make", args}
+            );
+        }
     }
 };
-
-/**
- * Get the workspace of a given uri
- * @param uri uri
- */
-function getWorkspace(uri: Uri): WorkspaceFolder | null {
-    const {workspaceFolders} = workspace;
-    if (workspaceFolders) {
-        const found = workspaceFolders.filter((folder) => {
-            return uri.fsPath.indexOf(folder.uri.fsPath) !== -1;
-        });
-
-        if (found) {
-            return found[0];
-        }
-    }
-    return null;
-}
