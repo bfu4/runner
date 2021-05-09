@@ -10,9 +10,7 @@
 	"engines": {
 		"vscode": "^1.56.0"
 	},
-	"categories": [
-		"compilation"
-	],
+	"categories": [],
 	"activationEvents": [
 		"onCommand:runner.make",
 		"onCommand:runner.exec"
