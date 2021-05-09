@@ -3,6 +3,10 @@
 	"displayName": "runner",
 	"description": "compile and run baby",
 	"version": "0.0.1",
+	"author": "bfu4",
+	"publisher": "bellafusari",
+	"repository": "https://github.com/bfu4/runner",
+	"license": "MIT",
 	"engines": {
 		"vscode": "^1.56.0"
 	},
